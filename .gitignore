@@ -1,0 +1,13 @@
+venv/
+__pycache__/
+*.pyc
+
+mlruns/
+mlruns_backup.zip
+
+.ipynb_checkpoints/
+
+train.csv
+test.csv
+submission.csv
+sample_submission.csv

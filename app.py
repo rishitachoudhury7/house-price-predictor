@@ -93,51 +93,58 @@ with tab4:
 
 # ── Predict button ──
 st.divider()
+
 if st.button("🔍 Predict Price", type="primary", use_container_width=True):
+
     with st.spinner("Calling prediction API..."):
+
         try:
             response = requests.post(
                 f"{API_URL}/predict",
                 json=inputs,
                 timeout=10
             )
+
             result = response.json()
 
             if "predicted_price" in result:
-                col1, col2, col3 = st.columns(3)
-                col1.metric("Predicted Price",  f"${result['predicted_price']:,.0f}")
-                col2.metric("Range Low",        f"${result['price_range_low']:,.0f}")
-                col3.metric("Range High",       f"${result['price_range_high']:,.0f}")
 
-                st.caption(
-                    f"Model: {result['model_version']} | "
-                    f"RMSLE: {result['rmsle']} | "
-                    f"MAPE: {result['mape_percent']}%"
+                st.success("Prediction completed successfully!")
+
+                st.metric(
+                    "Predicted House Price",
+                    f"${result['predicted_price']:,.0f}"
                 )
+
             else:
                 st.error(f"Unexpected response: {result}")
 
         except Exception as e:
             st.error(f"API Error: {e}")
 
+
 # ── Model info expander ──
 with st.expander("📊 Model Performance Details"):
-    try:
-        info = requests.get(f"{API_URL}/model-info", timeout=3).json()
-        col1, col2, col3, col4 = st.columns(4)
-        col1.metric("RMSE",  f"${info['RMSE']:,}")
-        col2.metric("R²",    info['R2'])
-        col3.metric("RMSLE", info['RMSLE'])
-        col4.metric("MAPE",  info['MAPE'])
-        st.caption(
-            f"Model: {info['model']} | "
-            f"Trees: {info['n_estimators']} | "
-            f"Kaggle: {info['kaggle_position']} | "
-            f"Features: {info['features_used']}"
-        )
-    except Exception:
-        st.warning("Could not fetch model info.")
 
+    st.markdown("""
+    **Model:** XGBoost Regressor
+
+    **Hyperparameter Tuning:** Optuna
+
+    **Performance Metrics**
+    - RMSE: 21,500
+    - R²: 0.919
+    - RMSLE: 0.1276
+    - MAPE: 11.4%
+
+    **Dataset**
+    - Ames Housing Dataset
+    - 1,460 training samples
+    - 200+ engineered features
+
+    **Leaderboard Performance**
+    - Top 25% Kaggle Submission
+    """)
 # ── Footer ──
 st.divider()
 st.markdown("""

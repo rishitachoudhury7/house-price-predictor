@@ -7,7 +7,7 @@ print("Health Status:")
 print(health.status_code)
 print(health.json())
 
-print("\n" + "="*50 + "\n")
+print("\n" + "=" * 50 + "\n")
 
 # Test Prediction Endpoint
 payload = {

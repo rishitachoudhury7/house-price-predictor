@@ -3,7 +3,7 @@ from pydantic import BaseModel
 import pandas as pd
 import numpy as np
 import json
-import mlflow.pyfunc
+import joblib
 import os
 
 app = FastAPI(title="House Price Prediction API")

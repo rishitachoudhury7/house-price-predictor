@@ -17,19 +17,13 @@ with open("feature_defaults.json", "r") as f:
 
 # Load model
 MODEL = None
-MODEL_PATH = None
 
 try:
-    mlruns_path = os.path.join(os.getcwd(), "mlruns")
+    MODEL = joblib.load("xgb_model.pkl")
+    print("Model loaded successfully")
 
-    for root, dirs, files in os.walk(mlruns_path):
-        if "MLmodel" in files:
-            MODEL_PATH = root
-            break
-
-    if MODEL_PATH:
-        MODEL = mlflow.pyfunc.load_model(MODEL_PATH)
-        print(f"Model loaded from: {MODEL_PATH}")
+except Exception as e:
+    print("Model load error:", e)
 
 except Exception as e:
     print("Model load error:", e)

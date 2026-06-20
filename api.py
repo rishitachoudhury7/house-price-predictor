@@ -23,9 +23,6 @@ try:
     print("Model loaded successfully")
 
 
-except Exception as e:
-    print("Model load error:", e)
-
 
 
 except Exception as e:

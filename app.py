@@ -8,7 +8,7 @@ st.set_page_config(
     layout="centered"
 )
 
-API_URL = "http://localhost:8000"
+API_URL = "https://house-price-predictor-n1of.onrender.com"
 
 # ── Header ──
 st.title("🏠 House Price Predictor")

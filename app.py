@@ -8,7 +8,7 @@ st.set_page_config(
     layout="centered"
 )
 
-API_URL = "https://house-price-predictor-n1of.onrender.com"
+API_URL = "https://house-price-api-docker.onrender.com"
 
 # ── Custom CSS — Appraisal Ledger theme ──
 st.markdown("""

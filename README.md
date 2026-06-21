@@ -173,13 +173,25 @@ docker run -p 8000:8000 house-price-api
 
 ---
 
-## What I'd improve next
+A validation lesson worth keeping
 
-- Re-run Optuna's search on the corrected (post-bug-fix) feature set for a fully optimized model — the current Optuna params were tuned before a missing feature-engineering step was caught and fixed
-- Add SHAP value explanations to the `/predict` response for per-prediction interpretability
-- Move from pickle to ONNX for faster, framework-independent inference
-- Add a CI/CD pipeline (GitHub Actions) to auto-test and redeploy on push
-- Persist MLflow tracking to a remote backend (currently local SQLite) for true team collaboration
+After the initial tuning, I tested whether 5-fold cross-validated hyperparameter search would generalize better than the original single-split-tuned Optuna search. The CV-tuned model scored better internally (RMSLE 0.1246 vs 0.1272), so the natural assumption was that it would also do better on unseen data.
+
+It didn't. Submitting both to Kaggle:
+
+ModelInternal validation RMSLEKaggle public RMSLESingle-split Optuna (production model)0.12720.126225-fold CV Optuna0.12460.12742
+
+The model with the worse internal score actually performed better on the real held-out test set. With only 1,460 training rows, each CV fold trains on ~1,168 rows — small enough that the "more robust" CV estimate didn't translate into better generalization here. The takeaway: no internal validation strategy, however principled, is a substitute for testing against genuinely unseen data. The production model (xgb_model.pkl) is the single-split-tuned version, kept specifically because it's the one that actually won on Kaggle's leaderboard, not the one that looked better on paper.
+
+
+What I'd improve next
+
+
+Re-run Optuna's search on the corrected (post-bug-fix) feature set for a fully optimized model — the current Optuna params were tuned before a missing feature-engineering step was caught and fixed
+Add SHAP value explanations to the /predict response for per-prediction interpretability
+Move from pickle to ONNX for faster, framework-independent inference
+Add a CI/CD pipeline (GitHub Actions) to auto-test and redeploy on push
+Persist MLflow tracking to a remote backend (currently local SQLite) for true team collaboration
 
 ---
 

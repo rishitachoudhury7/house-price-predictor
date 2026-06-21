@@ -136,7 +136,7 @@ st.markdown("""
 
 # ── API Health check ──
 try:
-    health = requests.get(f"{API_URL}/health", timeout=5).json()
+    health = requests.get(f"{API_URL}/health", timeout=60).json()
     if health.get("status") == "healthy":
         st.markdown(
             '<div class="stamp-box">◆ SURVEYOR ONLINE — model loaded and ready for inspection</div>',
